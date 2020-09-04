@@ -1,0 +1,11 @@
+# ignore everything
+*
+# accept these files
+
+!.gitignore
+!.dotfiles/*
+!.vimrc
+!.bash_aliases
+!.gitconfig
+!.zshrc
+!Library/Application\ Support/Code/User/snippets/*
