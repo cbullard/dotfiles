@@ -2,13 +2,17 @@ set nocompatible              " be iMproved, required
 so ~/.vim/plugins.vim
 syntax enable
 
+colorscheme atom-dark
+"colorscheme nord
 set backspace=indent,eol,start
 let mapleader = ','
 set number
 set linespace=15
+set mouse=nicr
+map <ScrollWheelDown> j
+map <ScrollWheelUp> k
 
 "-------------Searching------------"
-colorscheme atom-dark
 set t_CO=256
 set guifont:Fira_Code:h14
 "set guioptions -=l
@@ -28,6 +32,7 @@ nmap <C-J> <C-W><C-J>
 nmap <C-K> <C-W><C-K>
 nmap <C-H> <C-W><C-H>
 nmap <C-L> <C-W><C-L>
+nmap <C-/> :noh<cr>
 
 "-------------Mauppings------------"
 "command to open vimrc easily"
