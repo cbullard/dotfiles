@@ -4,6 +4,7 @@ syntax enable
 			
 
 
+
 colorscheme atom-dark
 "colorscheme nord
 set backspace=indent,eol,start
