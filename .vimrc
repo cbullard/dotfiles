@@ -2,6 +2,7 @@ set nocompatible              " be iMproved, required
 so ~/.vim/plugins.vim
 syntax enable
 
+
 colorscheme atom-dark
 "colorscheme nord
 set backspace=indent,eol,start
