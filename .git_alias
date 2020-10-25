@@ -1,0 +1,131 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[core]
+	editor = vim
+	excludeFile = /Users/cbullard/.gitignore
+	excludesfile = /Users/craigbullard/.gitignore_global
+
+[color "status"]
+  added = green
+  changed = red 
+  untracked = blue
+  #untracked = magenta bold
+
+[color "branch"]
+  remote = yellow
+
+[alias]
+	# advanced alias stuff https://www.atlassian.com/blog/git/advanced-git-aliases
+	#
+
+	latest-tag="!git describe --tags `git rev-list --tags --max-count=1`"
+	undoLastCommitMaster = reset --hard origin/master
+	revertLastStaging = "COMMIT=$(git log -n 1 --format='%H') && git staging && git pull && git revert $COMMIT --no-edit && git push && git checkout - && git feature"
+	resetmaster = "!git checkout master && reset --hard origin/master"
+
+	lastcommithash = "!git log -1 --format='%H'"
+	branch-name = "!git rev-parse --abbrev-ref HEAD"
+#	desc_branch_change = "!git branch --sort=-committerdate"
+
+	files-commited = "!git show --pretty="" --name-only $(git log -1 --format='%H')"
+
+	# show all aliases
+		alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\t=> \\2/' | sort
+	
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lo = log -1
+	s = status
+	
+#	lastfiles = show --pretty="" --name-only $(git log -1 --format="%H")
+
+	#branches
+	brdate = br --sort=committerdate
+
+	co = checkout
+	br = branch
+	cm  = commit -m
+	cma = commit -a -m
+	a = add
+	branch-by-date = "!git br --sort=committerdate | tail"
+	no-amend-add-commit = commit -a --amend --no-edit
+	#no-amend-add-commit = "!sh ~/.dotfiles/checkAuthor.sh"
+	resetmaster ="!git reset --hard origin/master && git checkout -"
+
+	hash = '${lastCommitHash}' 
+
+	last = log
+	exclude = !sh -c 'echo "$1" >> .git/info/exclude' -
+
+	ignore=!([ ! -e .gitignore ] && touch .gitignore) | echo $1 >>.gitignore
+
+	master = checkout master
+	getmaster = "!git checkout master && git pull"
+
+	staging = checkout staging
+	amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+	publish =    "!git push -u origin $(git branch-name)"
+#	files_diff = "!git show --name-only  $(git lastcommithash)"
+
+	#rebaseMaster = "rebase -i origin/master"
+	rbmaster = "!git checkout master && git pull && git checkout - && git rebase -i origin/master"
+
+#	mkstaging = "!git checkout staging && git pull && git checkout - && git checkout -b $(git branch-name)_STAGING && git rebase -i origin/staging"
+	rbstaging = "!git checkout staging && git pull && git co - && git rebase -i origin/staging"
+	mkstaging = "!( git branch -D $(git branch-name)_STAGING || true ) && git checkout staging && git pull && git checkout - && git checkout -b $(git branch-name)_STAGING && git rebase -i origin/staging"
+	
+	bllrd = "!git br | grep -v 'master|staging|' $(git branch-name)"	
+
+	delstaging = "!git branch -D $(git branch-name)_STAGING"
+	#COMMIT=$(git log -n 1 --format="%H") && git staging && git pull && git revert $COMMIT --no-edit && git push && git checkout - && git feature
+	mr = "!sh ~/.dotfiles/git-create-mr.sh"
+	feature = !git checkout $(git branch-name | perl -n -e'/([A-Za-z\\-\\_]+)_STAGING/ && print $1')
+	lgt = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
+	lgg = log --graph --all --pretty=format:'%C(yellow)%h -%C(auto)%d %C(bold cyan)%s %C(bold white)(%cr)%Creset %C(dim white)<%an>'
+	rflog = reflog --date=iso
+[push]
+	default = simple
+
+[help]
+	autocorrect = 200
+
+[diff]
+	tool = Kaleidoscope
+
+[difftool "Kaleidoscope"]
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+
+[mergetool "Kaleidoscope"]
+	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+	trustexitcode = true
+
+[merge]
+	tool = Kaleidoscope
+
+[difftool]
+	prompt = false
+
+[mergetool]
+	prompt = false
+
+[branch]
+	autosetuprebase = always
+
+
+
+
+[status]
+	showUntrackedFiles = all
+
+
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/craigbullard/.stCommitMsg
