@@ -6,7 +6,7 @@
 
 [core]
 	editor = vim
-	excludeFile = /Users/cbullard/.gitignore
+	excludeFile = /Users/craigbullard/.gitignore
 	excludesfile = /Users/craigbullard/.gitignore_global
 
 [color "status"]
